@@ -17,6 +17,9 @@ public class GenerateOtp {
 
     @Autowired
     private OtpRepository otpRepository;
+    @Autowired
+    private OTPService otpService;
+
 
     @PostMapping
     public ResponseEntity<Map<String, String>> generateOtp(@RequestParam String mobileNumber) {
@@ -37,14 +40,14 @@ public class GenerateOtp {
 
 
 //        String otp = String.format("%04d", new Random().nextInt(10000));
-        String otp= OTPService.generateMixedCaseOTP(4);
+        String otp= otpService.generateMixedCaseOTP(4);
         String uuid = UUID.randomUUID().toString();
 
         OtpRecord record = new OtpRecord();
         record.setUuid(uuid);
         record.setMobileNumber(mobileNumber);
         record.setOtp(otp);
-        record.setCreatedAt(LocalDateTime.now());
+        record.setCreatedAt(otpService.formatTime());
         record.setValidated(false);
 
         otpRepository.save(record); // Saves record in PostgreSQL

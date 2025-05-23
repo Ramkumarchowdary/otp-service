@@ -27,8 +27,7 @@ public class ValidateOtpController {
         OtpRecord record = optionalRecord.get();
 
         if (record.getOtp().equals(otp)) {
-            record.setValidated(true);
-            otpRepository.save(record);
+            otpRepository.deleteById(uuid);
             return ResponseEntity.ok("OTP is valid");
         } else {
             return ResponseEntity.status(400).body("Invalid OTP");
